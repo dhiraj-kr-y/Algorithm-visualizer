@@ -11,11 +11,6 @@ Key Features
 Visualize algorithms from code:
 Algorithm Visualizer allows you to witness algorithms in action by visualizing code written in various programming languages. This visual approach facilitates a better understanding of algorithmic behavior..
 
-Learn about Algorithms:
-Explore our collection of tutorials, articles, and videos that serve as valuable resources for learning about algorithms.
-
-algorithms
-In this repository, you'll find visualizations of algorithms showcased in the website's side menu. Contributions here directly impact the educational content available on the platform. https://github.com/algorithm-visualizer/algorithms
 
 tracers
 Explore the various visualization libraries in different programming languages. These libraries extract visualization commands from code. https://github.com/search?q=topic%3Avisualization-library+org%3Aalgorithm-visualizer&type=Repositories
