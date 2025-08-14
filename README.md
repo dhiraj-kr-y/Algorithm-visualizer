@@ -1,1 +1,1 @@
-# Algorithm-visualizer
+# miniG12

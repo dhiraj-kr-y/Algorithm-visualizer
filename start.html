@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="public/styling/style_home.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@531&display=swap" rel="stylesheet" />
+    <title>Algorithm Visualizer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto Slab', serif;
+            color: black;
+            text-align: center;
+            background: white;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .background-animation {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(230, 230, 230, 0.9), rgba(255, 255, 255, 0.8));
+            animation: moveBackground 10s infinite alternate ease-in-out;
+            z-index: -1;
+        }
+
+        .navbar {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 2;
+        }
+
+        .element-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .element-left img {
+            height: 90px;
+            margin-right: 10px;
+        }
+
+        .navbar a {
+            color: black;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            color: #ff5733;
+        }
+
+        /* Feedback Button */
+        .feedback-btn {
+            background: #ff5733;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .feedback-btn:hover {
+            background: #e84118;
+            transform: scale(1.1);
+        }
+
+        .grid-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+            justify-content: center;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .flex-card-items {
+            background: white;
+            color: black;
+            border-radius: 15px;
+            padding: 30px;
+            transition: transform 0.3s ease-in-out, background 0.3s, color 0.3s;
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: left;
+        }
+
+        .flex-card-items:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-section {
+            padding: 50px 20px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 1200px;
+            transition: transform 0.3s ease-in-out, background 0.3s, color 0.3s;
+        }
+
+        .about-section:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background: #121212;
+            color: white;
+        }
+
+        .navbar.dark-mode {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar a.dark-mode {
+            color: white;
+        }
+
+        .navbar a.dark-mode:hover {
+            color: #ff5733;
+        }
+
+        .feedback-btn.dark-mode {
+            background: #ff5733;
+            color: white;
+        }
+
+        .feedback-btn.dark-mode:hover {
+            background: #e84118;
+        }
+
+        .flex-card-items.dark-mode {
+            background: #333;
+            color: white;
+        }
+
+        .about-section.dark-mode {
+            background: #1e1e1e;
+            color: white;
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: black;
+            transition: color 0.3s;
+            border-radius: 50%;
+            padding: 10px;
+        }
+
+        .dark-mode-toggle.dark-mode {
+            color: white;
+            background: black;
+        }
+
+        .dark-mode-toggle i {
+            background: white;
+            border-radius: 50%;
+            padding: 10px;
+        }
+
+        .dark-mode-toggle.dark-mode i {
+            background: black;
+            color: white;
+        }
+
+        .navlen {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 3;
+        }
+
+        /* Style for the side menu */
+        .sidebar {
+            height: 100%;
+            width: 300px;
+            position: fixed;
+            top: 0;
+            left: -300px;
+            /* Hidden initially */
+            background-color: #181b1d;
+            /* A darkish blue */
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: left 0.4s ease;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 16px;
+            color: #ecf0f1;
+            /* Light gray */
+            display: block;
+            transition: 0.3s;
+            border-left: 5px solid transparent;
+        }
+
+        .sidebar a:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-left: 5px solid #3498db;
+        }
+
+        .sidebar a i {
+            margin-right: 40px;
+            /* Space for icons */
+        }
+
+        .main {
+            transition: margin-left 0.4s ease;
+        }
+
+        /* Style for the menu icon */
+        .menu-icon {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 32px;
+            color: #fff;
+            /* White */
+            cursor: pointer;
+            z-index: 1001;
+            /* Above sidebar */
+            transition: color 0.3s;
+        }
+
+        .menu-icon:hover {
+            color: rgb(13, 35, 49);
+        }
+
+        /* Active classes */
+        .sidebar.active {
+            left: 0;
+        }
+
+        .main.active {
+            margin-left: 250px;
+        }
+
+        /* Dark overlay behind the sidebar */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Semi-transparent black */
+            z-index: 999;
+            /* Below sidebar, above everything else */
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Responsive design */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+
+            .main.active {
+                margin-left: 0;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Menu icon -->
+    <div class="menu-icon" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <a href="public/tree/tree.html"><i class="fas fa-tree"></i>Tree Algorithms</a>
+        <a href="public/graph/graph.html"><i class="fas fa-project-diagram"></i>Graph Algorithms</a>
+        <a href="public/searching/searching.html"><i class="fas fa-search"></i>Searching Algorithms</a>
+        <a href="public/sorting/sorting_page.html"><i class="fas fa-sort-amount-down"></i>Sorting Algorithms</a>
+        <a href="start.html"><i class="fas fa-home"></i>Home</a>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="background-animation"></div>
+    <div class="navlen">
+        <div class="navbar">
+            <div class="element-left"style="margin-left: 50px;">
+                <img src="Logo1.png" alt="logo">
+                <a href="#home">Algorithm Visualizer</a>
+            </div>
+            <div class="element-right">
+                <a href="#home">Home</a>
+                <a href="#about">About Us</a>
+                <a href="#algorithms">Algorithms</a>
+                <a href="#members">Members</a>
+                <!-- Feedback Button -->
+                <button class="feedback-btn" onclick="location.href='feedback.html'">Give Feedback</button>
+                <!-- Dark Mode Toggle Button -->
+                <button class="dark-mode-toggle" id="dark-mode-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <section id="home" class="about-section" style="margin-top: 100px;">
+        <h2>Welcome to Algorithm Visualizer</h2>
+        <p>
+            Algorithm Visualizer is an interactive platform that helps you visualize the working of various algorithms.
+            Whether you are a student trying to understand algorithms better or a professional looking to brush up on
+            your skills,
+            this tool provides a visual representation of complex algorithms to make learning easier and more engaging.
+        </p>
+        <p>
+            Explore different categories of algorithms including Tree Algorithms, Path Algorithms, Array Searching
+            Algorithms,
+            and Array Sorting Algorithms. Each category contains multiple algorithms that you can visualize and
+            interact with.
+        </p>
+        <p>
+            Click on any of the categories below to get started and dive into the world of algorithms!
+        </p>
+    </section>
+    <section id="about" class="about-section">
+        <h2>About Us</h2>
+        <p>
+            Algorithm Visualizer was created with the goal of making learning algorithms easier and more interactive.
+            Our team is dedicated to providing a platform where users can visualize and interact with various
+            algorithms,
+            helping them to understand the underlying concepts better.
+        </p>
+        <p>
+            We believe that visual learning is a powerful tool, and our platform is designed to cater to students,
+            educators, and professionals alike. Whether you are preparing for exams, teaching a class, or just
+            curious
+            about algorithms, Algorithm Visualizer is here to help.
+        </p>
+        <p>
+            Our mission is to make learning algorithms accessible and enjoyable for everyone. We are constantly
+            working
+            on adding new features and improving the platform based on user feedback. Thank you for being a part of
+            our journey!
+        </p>
+    </section>
+    <section id="algorithms" class="grid-section">
+        <div class="flex-card-items" onclick="location.href='public/tree/tree.html'">
+            <h2>Tree Algorithms</h2>
+            <ul>
+                <li>Binary Search Tree</li>
+                <li>AVL Tree</li>
+                <li>Red-Black Tree</li>
+                <li>Heap Data Structure</li>
+            </ul>
+        </div>
+        <div class="flex-card-items" onclick="location.href='public/graph/graph.html'">
+            <h2>Path Algorithms</h2>
+            <ul>
+                <li>Dijkstra's Algorithm</li>
+                <li>A* Algorithm</li>
+                <li>Depth First Search (DFS)</li>
+                <li>Breath First Search (BFS)</li>
+            </ul>
+        </div>
+        <div class="flex-card-items" onclick="location.href='public/searching/searching.html'">
+            <h2>Array Searching Algorithms</h2>
+            <ul>
+                <li>Binary Search</li>
+                <li>Linear Search</li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="flex-card-items" onclick="location.href='public/sorting/sorting_page.html'">
+            <h2>Array Sorting Algorithms</h2>
+            <ul>
+                <li>Bubble Sort</li>
+                <li>Insertion Sort</li>
+                <li>Merge Sort</li>
+                <li>Quick Sort</li>
+            </ul>
+        </div>
+    </section>
+    <section id="members" class="grid-section" style="grid-template-columns: repeat(5, 1fr);">
+        <div class="flex-card-items">
+            <img src="Ashfar.jpg" alt="Member 1" style="width:100%; border-radius: 50%;">
+            <h2>Ashfar<br>Faizi</h2>
+            <p>Roll No. 18 <br>S6 CSE</p>
+        </div>
+        <div class="flex-card-items">
+            <img src="rashmi.jpg" alt="Member 2" style="width:100%; border-radius: 50%;">
+            <h2>Rashmi Verma</h2>
+            <p>Roll No. 53 <br>S6 CSE</p>
+        </div>
+        <div class="flex-card-items">
+            <img src="abhishek.jpg" alt="Member 3" style="width:100%; border-radius: 50%;">
+            <h2>Abhishek Kumar Choubey</h2>
+            <p>Roll No. 03 <br>S6 CSE</p>
+        </div>
+        <div class="flex-card-items">
+            <img src="murari.jpg" alt="Member 4" style="width:100%; border-radius: 50%;">
+            <h2>Murari Kumar</h2>
+            <p>Roll No. 45 <br>S6 CSE</p>
+        </div>
+        <div class="flex-card-items">
+            <img src="dhiraj.jpg" alt="Member 5" style="width:100%; border-radius: 50%;">
+            <h2>Dhiraj Kumar</h2>
+            <p>Roll No. 27 <br>S6 CSE</p>
+        </div>
+    </section>
+    <script>
+        const toggleButton = document.getElementById('dark-mode-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            document.querySelectorAll('.navbar a').forEach(el => el.classList.toggle('dark-mode'));
+            document.querySelectorAll('.feedback-btn').forEach(el => el.classList.toggle('dark-mode'));
+            document.querySelectorAll('.flex-card-items').forEach(el => el.classList.toggle('dark-mode'));
+            document.querySelectorAll('.about-section').forEach(el => el.classList.toggle('dark-mode'));
+            document.querySelectorAll('.navbar').forEach(el => el.classList.toggle('dark-mode'));
+            const icon = toggleButton.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("overlay");
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+        }
+    </script>
+</body>
+
+</html>

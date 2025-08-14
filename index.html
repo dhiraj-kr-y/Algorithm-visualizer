@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(circle, #ffffff, #f0f0f0, #e0e0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+<script>
+    let scene = new THREE.Scene();
+    let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    let renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    let ambientLight = new THREE.AmbientLight(0x404040, 2);
+    scene.add(ambientLight);
+
+    let spotLight = new THREE.SpotLight(0xffffff, 2);
+    spotLight.position.set(15, 20, 10);
+    scene.add(spotLight);
+
+    let textLoader = new THREE.FontLoader();
+    textLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+        let textGeometry = new THREE.TextGeometry('Welcome to Algorithm Visualizer \n                  By Group 12', {
+            font: font,
+            size: 3,
+            height: 0.5,
+            curveSegments: 12,
+            bevelEnabled: true,
+            bevelThickness: 0.2,
+            bevelSize: 0.2,
+            bevelOffset: 0,
+            bevelSegments: 5
+        });
+        textGeometry.center();
+
+        let textMaterial = new THREE.MeshStandardMaterial({
+            color: 0x222222,
+            metalness: 0.5,
+            roughness: 0.5,
+            emissive: 0x111111,
+            emissiveIntensity: 0.3,
+            transparent: true
+        });
+        let textMesh = new THREE.Mesh(textGeometry, textMaterial);
+        textMesh.position.set(0, 0, -10);
+        scene.add(textMesh);
+
+        let opacity = 1;
+        let scale = 1;
+        let animate = function() {
+            requestAnimationFrame(animate);
+            if (opacity > 0) {
+                opacity -= 0.005;
+                scale += 0.0025;
+                textMaterial.opacity = opacity;
+                textMesh.scale.set(scale, scale, scale);
+            }
+            renderer.render(scene, camera);
+        };
+        animate();
+    });
+
+    camera.position.z = 20;
+
+    window.addEventListener('resize', () => {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+    });
+
+    setTimeout(() => {
+        window.location.href = 'signin.html';
+    }, 5000);
+</script>
+</body>
+</html>
