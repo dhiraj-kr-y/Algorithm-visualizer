@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Sign In</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #000, #333);
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 400px; /* Increased width */
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.3);
+            transform: perspective(1000px) rotateY(5deg);
+            transition: 0.5s;
+        }
+        .container:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+        h2 {
+            text-align: center;
+            color: #000;
+        }
+        .input-box {
+            width: 95%;
+            margin: 10px 0;
+        }
+        input {
+            width: 100%; /* Adjusted width to fit the container */
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: white;
+            color: black;
+            box-shadow: 0px 5px 15px rgba(17, 15, 15, 0.3);
+        }
+        .link {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .link a {
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="login-container">
+        <h2>Sign In</h2>
+        <div class="input-box">
+            <input type="text" id="username" placeholder="Username">
+        </div>
+        <div class="input-box">
+            <input type="password" id="password" placeholder="Password">
+        </div>
+        <button onclick="login()">Login</button>
+        <div class="link">
+            <a href="#" onclick="showRegister()">New User? Create Account</a>
+        </div>
+    </div>
+    
+    <div class="container" id="register-container" style="display: none;">
+        <h2>Create Account</h2>
+        <div class="input-box">
+            <input type="text" id="new-username" placeholder="New Username">
+        </div>
+        <div class="input-box">
+            <input type="password" id="new-password" placeholder="New Password">
+        </div>
+        <button onclick="register()">Register</button>
+        <div class="link">
+            <a href="#" onclick="showLogin()">Already have an account? Sign In</a>
+        </div>
+    </div>
+
+    <script>
+        const users = new Map();
+
+        async function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (users.has(username) && users.get(username) === password) {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Login Successful!",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    window.location.href = "start.html";
+                });
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Invalid Credentials",
+                    icon: "error",
+                    confirmButtonText: "Try Again"
+                });
+            }
+        }
+
+        async function register() {
+            const newUsername = document.getElementById("new-username").value;
+            const newPassword = document.getElementById("new-password").value;
+
+            if (users.has(newUsername)) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Username already exists!",
+                    icon: "error",
+                    confirmButtonText: "Try Again"
+                });
+            } else {
+                users.set(newUsername, newPassword);
+                Swal.fire({
+                    title: "Success!",
+                    text: "Account Created Successfully!",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    showLogin();
+                });
+            }
+        }
+
+        function showRegister() {
+            document.getElementById("login-container").style.display = "none";
+            document.getElementById("register-container").style.display = "block";
+        }
+
+        function showLogin() {
+            document.getElementById("register-container").style.display = "none";
+            document.getElementById("login-container").style.display = "block";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../styling/style_graph.css" />
+  <link rel="stylesheet" href="../styling/style_home.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@531&display=swap" rel="stylesheet" />
+
+  <!-- Primary Meta Tags -->
+  <title>Algorithm Visualizer</title>
+  <meta name="title" content="Algorithm Visualizer">
+  <meta name="description" content="Visualize working of complex algorithms, play with them, and know them better.">
+
+
+  <title>Algorithm Visualizer</title>
+  <style>
+    /* Style for the side menu */
+    .sidebar {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: -250px;
+      /* Hidden initially */
+      background-color: #2c3e50;
+      /* A darkish blue */
+      overflow-x: hidden;
+      padding-top: 60px;
+      transition: left 0.4s ease;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+    }
+
+    .sidebar a {
+      padding: 15px 25px;
+      text-decoration: none;
+      font-size: 16px;
+      color: #ecf0f1;
+      /* Light gray */
+      display: block;
+      transition: 0.3s;
+      border-left: 5px solid transparent;
+    }
+
+    .sidebar a:hover {
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.08);
+      border-left: 5px solid #3498db;
+    }
+
+    .sidebar a i {
+      margin-right: 10px;
+      /* Space for icons */
+    }
+
+    .main {
+      margin-left: 0;
+      transition: margin-left 0.4s ease;
+    }
+
+    /* Style for the menu icon */
+    .menu-icon {
+      position: fixed;
+      top: 10px;
+      left: 50px;
+      font-size: 32px;
+      color: #fff;
+      /* White */
+      cursor: pointer;
+      z-index: 1001;
+      /* Above sidebar */
+      transition: color 0.3s;
+    }
+
+    .menu-icon:hover {
+      color: #3498db;
+    }
+
+    /* Active classes */
+    .sidebar.active {
+      left: 0;
+    }
+
+    .main.active {
+      margin-left: 250px;
+    }
+
+    /* Dark overlay behind the sidebar */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      /* Semi-transparent black */
+      z-index: 999;
+      /* Below sidebar, above everything else */
+      display: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    /* Responsive design */
+    @media screen and (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        left: -100%;
+      }
+
+      .main.active {
+        margin-left: 0;
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #2c3e50;
+      padding: 10px 20px;
+      color: white;
+      width: 100%;
+      /* Make navbar full width */
+      box-sizing: border-box;
+      /* Include padding in width calculation */
+      height: 60px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <!-- Menu icon -->
+  <div class="menu-icon" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="../tree/tree.html"><i class="fas fa-tree"></i>Tree Algorithms</a>
+    <a href="../graph/graph.html"><i class="fas fa-project-diagram"></i>Graph Algorithms</a>
+    <a href="../searching/searching.html"><i class="fas fa-search"></i>Searching Algorithms</a>
+    <a href="../sorting/sorting_page.html"><i class="fas fa-sort-amount-down"></i>Sorting Algorithms</a>
+    <a href="../../start.html"><i class="fas fa-home"></i>Home</a>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main content -->
+  <div class="main" id="main">
+    <!-- Navigation Bar -->
+    <div class="navbar">
+      <div class="element"style="margin-left: 100px;">
+        <a href="../../start.html">Algorithm Visualizer</a>
+      </div>
+    </div>
+    <div class="flex-labels">
+      <div class="flex-label-items">
+        <label for="algo">Path Algorithm:</label>
+        <select id="algo" name="algo">
+          <!-- <option value="noneAlgo">Choose</option> -->
+          <option style="background: #E0E5EC;" value="Dstr">Dijkstra's</option>
+          <option value="Astr">A*</option>
+          <option value="dfs">DFS</option>
+          <option value="bfs">BFS</option>
+        </select>
+      </div>
+      <div class="flex-label-items">
+        <label for="weight">Graph Edges:</label>
+        <select id="weight" name="weight">
+          <!-- <option value="noneWeight">Choose</option> -->
+          <option value="Unweighted">Unweighted</option>
+          <option value="weighted">Weighted</option>
+        </select>
+      </div>
+      <!-- <div class="flex-label-items">
+        <label for="maze">Maze Type:</label>
+        <select id="maze" name="maze">
+          <option value="noneMaze">Choose</option>
+          <option value="custom">Custom</option>
+          <option value="p1">Maze 1</option>
+          <option value="p2">Maze 2</option>
+        </select>
+      </div> -->
+      <div class="flex-label-items">
+        <label for="speed"> Visual Speed: </label>
+        <div class="slidecontainer">
+          <input type="range" min="1" max="20" value="15" class="slider" id="speed">
+        </div>
+      </div>
+    </div>
+    <div class="flex-buttons">
+      <div class="flex-button-items"> <button class="start">START</button> </div>
+      <div class="flex-button-items"> <button class="refresh">RELOAD</button> </div>
+      <div class="flex-button-items"> <button class="reset">RESET</button> </div>
+    </div>
+  </div>
+  <div class="container"></div>
+  <!-- <script type="module" src="./js/createGrid.js"></script> -->
+  <script type="module" src="./js/main.js"></script>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const main = document.getElementById("main");
+      const overlay = document.getElementById("overlay");
+      sidebar.classList.toggle("active");
+      main.classList.toggle("active");
+      overlay.classList.toggle("active");
+    }
+  </script>
+</body>
+
+</html>
